@@ -9,7 +9,7 @@ const tourController=require('./controllers/tour.js')
 const contactUs=require('./controllers/contactUs.js')
 const cors = require('cors');
 const port = process.env.PORT || 4000;
-const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@tours.qpddv9d.mongodb.net/?retryWrites=true&w=majority`;
+const uri = "mongodb+srv://rawat009111:fSQGtHMkkia3YhjZ@tours.qpddv9d.mongodb.net/?retryWrites=true&w=majority";
 const mongoose = require('mongoose');
 mongoose.connect(uri, { });
 const db = mongoose.connection;
