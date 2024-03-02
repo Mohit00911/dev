@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/users.js');
 const Vendor = require('../models/vendors.js');
-
+const bcrypt = require('bcrypt')
 const otpGenerator = require('otp-generator');
 const twilio =require('twilio');
 const crypto = require('crypto-js');
