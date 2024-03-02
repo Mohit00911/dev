@@ -12,8 +12,10 @@ const generateToken = (userId) => {
   return jwt.sign({ userId }, 'okjnlk', { expiresIn: '1h' });
 };
 
-const generateSecretKey = () => {
-  return crypto.randomBytes(32).toString('hex'); 
+const generateSecretKey = async () => {
+  const saltRounds = 10; // You can adjust the number of salt rounds as needed
+  const secretKey = await bcrypt.genSalt(saltRounds);
+  return secretKey;
 };
 
 const secretKey = generateSecretKey();
