@@ -4,7 +4,7 @@ const Vendor = require('../models/vendors.js');
 
 const otpGenerator = require('otp-generator');
 const twilio =require('twilio');
-const crypto = require('crypto');
+const crypto = require('crypto-js');
 const jwt = require('jsonwebtoken'); 
 const { configDotenv } = require('dotenv');
 configDotenv()
@@ -12,10 +12,8 @@ const generateToken = (userId) => {
   return jwt.sign({ userId }, 'okjnlk', { expiresIn: '1h' });
 };
 
-const generateSecretKey = async () => {
-  const saltRounds = 10; // You can adjust the number of salt rounds as needed
-  const secretKey = await bcrypt.genSalt(saltRounds);
-  return secretKey;
+const generateSecretKey = () => {
+  return crypto.randomBytes(32).toString('hex'); 
 };
 
 const secretKey = generateSecretKey();
@@ -85,7 +83,7 @@ const secretKey = generateSecretKey();
     
 
       const existingUser = await UserModel.findOne({ email });
-   
+      console.log('Existing User:', existingUser);
       if (!existingUser) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
