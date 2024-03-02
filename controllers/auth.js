@@ -11,7 +11,11 @@ configDotenv()
 const generateToken = (userId) => {
   return jwt.sign({ userId }, 'okjnlk', { expiresIn: '1h' });
 };
-
+const comparePasswords = (inputPassword, hashedPassword) => {
+  // Hash the input password using the same algorithm and compare with the stored hashed password
+  const hashedInputPassword = crypto.SHA256(inputPassword).toString(crypto.enc.Hex);
+  return hashedInputPassword === hashedPassword;
+};
 const generateSecretKey = () => {
   return crypto.randomBytes(32).toString('hex'); 
 };
@@ -41,7 +45,7 @@ const secretKey = generateSecretKey();
         return res.status(400).json({ error: 'User with this email already exists' });
       }
       else{
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = crypto.SHA256(password).toString(crypto.enc.Hex);
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
 
     
@@ -88,9 +92,12 @@ const secretKey = generateSecretKey();
         return res.status(401).json({ error: 'Invalid email or password' });
       }
   
-      const passwordMatch = await bcrypt.compare(password, existingUser.password);
+      const storedHashedPassword = '...'; // This should be the stored hashed password
+      const userProvidedPassword = 'user_input_password';
+      
+      const passwordsMatch = comparePasswords(userProvidedPassword, storedHashedPassword);
   
-      if (!passwordMatch) {
+      if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
   
