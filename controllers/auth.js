@@ -16,11 +16,6 @@ const comparePasswords = (inputPassword, hashedPassword) => {
   const hashedInputPassword = crypto.SHA256(inputPassword).toString(crypto.enc.Hex);
   return hashedInputPassword === hashedPassword;
 };
-const generateSecretKey = () => {
-  return crypto.randomBytes(32).toString('hex'); 
-};
-
-const secretKey = generateSecretKey();
 
   const signup = async (req, res) => {
    
