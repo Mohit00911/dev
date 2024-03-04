@@ -40,7 +40,7 @@ const comparePasswords = (inputPassword, hashedPassword) => {
         return res.status(400).json({ error: 'User with this email already exists' });
       }
       else{
-        const hashedPassword = crypto.SHA256(password).toString(crypto.enc.Hex);
+        // const hashedPassword = crypto.SHA256(password).toString(crypto.enc.Hex);
         const otp = otpGenerator.generate(6, { upperCase: false, specialChars: false, alphabets: false });
 
     
@@ -48,7 +48,8 @@ const comparePasswords = (inputPassword, hashedPassword) => {
           firstName,
           lastName,
           email,
-          password: hashedPassword,        
+          // password: hashedPassword,  
+          password,      
           accountType,
           confirmPassword,
           phone
@@ -69,7 +70,7 @@ const comparePasswords = (inputPassword, hashedPassword) => {
   const login = async (req, res) => {
     try {
       const { email, password, accountType } = req.body;
-  
+
       let UserModel;
   
       if (accountType === 'user') {
@@ -82,16 +83,16 @@ const comparePasswords = (inputPassword, hashedPassword) => {
     
 
       const existingUser = await UserModel.findOne({ email });
-      console.log('Existing User:', existingUser);
+ 
       if (!existingUser) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
   
-      const storedHashedPassword = '...'; // This should be the stored hashed password
-      const userProvidedPassword = 'user_input_password';
-      
-      const passwordsMatch = comparePasswords(userProvidedPassword, storedHashedPassword);
-  
+   
+      const passwordsMatch = password==existingUser.password
+      console.log(password)
+      console.log(existingUser.password)
+  console.log(passwordsMatch)
       if (!passwordsMatch) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
